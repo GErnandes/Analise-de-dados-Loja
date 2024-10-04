@@ -9,6 +9,19 @@ if 'data' not in st.session_state:
     df_data = pd.read_csv("dataset/Base_de_Dados_Prova_1(Detalhe de Vendas).csv", sep=";", decimal=",", index_col=0, encoding='ISO-8859-1')
     st.session_state['data'] = df_data
 
+st.title('Dashboard de Vendas')
+
+# Calcular o valor total de vendas
+valor_total_vendas = st.session_state['data']['Valor de venda'].sum()
+
+# Calcular o valor total de vendas
+valor_total_salario = st.session_state['data']['Salario total'].sum()
+
+col1, col2 = st.columns(2)
+col1.metric(label="Valor Total de Vendas", value=f"R$ {valor_total_vendas:,.2f}")
+col2.metric(label="Valor Total dos Salários", value=f"R$ {valor_total_salario:,.2f}")
+
+
 # Calcular os 10 produtos mais vendidos em quantidade
 produtos_mais_vendidos_qtd = (st.session_state['data']
                            .groupby('Nome Produto', as_index=False)['Quantidade']
@@ -83,7 +96,7 @@ fig_cliente = px.bar(top10_clientes,
                    x='Valor de venda',
                    y='Cliente',
                    orientation='h',
-                   title='Top 10 Clientes que mais compram',
+                   title='Top 10 Clientes que mais Compram',
                    labels={'Valor de venda': 'Valor de Venda (R$)', 'Cliente': 'Nome do Cliente'},
                    color='Valor de venda',
                    text='Valor de venda',  # Mostrar os números exatos
@@ -98,7 +111,7 @@ fig_vendedor = px.bar(top10_vendedores,
                    x='Valor de venda',
                    y='Vendedor',
                    orientation='h',
-                   title='Top 10 Vendedores que mais vendem',
+                   title='Top 10 Vendedores que mais Vendem',
                    labels={'Valor de venda': 'Valor de Venda (R$)', 'Vendedor': 'Nome do Vendedor'},
                    color='Valor de venda',
                    text='Valor de venda',  # Mostrar os números exatos
@@ -110,7 +123,7 @@ fig_categoria = px.bar(top10_categorias_qtd,
                    x='Quantidade',
                    y='Categoria',
                    orientation='h',
-                   title='Top 10 Categorias que mais vendem em quantidade',
+                   title='Top 10 Categorias que mais vendem em Quantidade',
                    labels={'Quantidade': 'Quantidade Vendida (R$)', 'Categoria': 'Categorias'},
                    color='Quantidade',
                    text='Quantidade',  # Mostrar os números exatos
@@ -132,7 +145,7 @@ fig_categoria2 = px.bar(top10_categorias_vlr,
 
 st.plotly_chart(fig_qtd)
 st.plotly_chart(fig_valor)
-st.plotly_chart(fig_cliente)
-st.plotly_chart(fig_vendedor)
 st.plotly_chart(fig_categoria)
 st.plotly_chart(fig_categoria2)
+st.plotly_chart(fig_cliente)
+st.plotly_chart(fig_vendedor)
